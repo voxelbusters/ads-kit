@@ -32,7 +32,11 @@ Ads Kit is an **open-source Unity plugin** that simplifies ad integration across
 
 ### **1️⃣ Install Ads Kit**
 
-Clone or download latest release from [GitHub Releases](https://github.com/voxelbusters/ads-kit/releases/latest) and import it into your Unity project.
+Get latest unity package from [GitHub Releases](https://github.com/voxelbusters/ads-kit/releases/latest) and import it into your Unity project
+
+or
+
+Clone and merge contents of Assets folder with in your project.
 ```
 git clone https://github.com/voxelbusters/ads-kit.git
 ```
@@ -54,7 +58,7 @@ To start using Ads Kit, initialize it with a **consent form provider**:
 public  void  InitialiseAdsManager(IConsentFormProvider consentProvider)
 {
   var operation = AdsManager.Initialise(consentProvider);
-  operation.OnComplete += (result) =>
+  operation.OnComplete += (operationHandle) =>
     {
       // Ads Kit is now ready!
     };
@@ -126,14 +130,14 @@ Track ad lifecycle events via **IAdLifeCycleListener** or attach callbacks to th
 
 ```
 var operation = AdsManager.LoadAd("placementId");
-operation.OnComplete += (result) =>
-{   if (result.Success)
+operation.OnComplete += (operationHandle) =>
+{   if (operationHandle.Error == null)
     {
         Debug.Log("Ad Loaded Successfully!");
     }
     else
     {
-        Debug.LogError("Ad Failed to Load: " + result.Error);
+        Debug.LogError("Ad Failed to Load: " + operationHandle.Error);
     }
 };
 ``` 
@@ -162,3 +166,17 @@ Ads Kit is a **community-driven project**, and we welcome all contributions!
 🎉 A huge thanks to all our contributors who make Ads Kit better every day!
 
 🔗 **Start contributing today:** [GitHub Link](https://github.com/voxelbusters/ads-kit)
+
+----------
+
+## **📄 License**
+
+Ads Kit is **open-source** and available under the **MIT License**.
+
+📌 **MIT License – Free to use, modify, and distribute!**
+
+----------
+
+## **📥 Download & Get Started**
+
+🚀 **[Download Ads Kit on GitHub](https://github.com/voxelbusters/ads-kit)** and start monetizing your Unity game today!
