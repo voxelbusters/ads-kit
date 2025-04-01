@@ -150,6 +150,15 @@ If you prefer a **no-code implementation**, Ads Kit offers an easy way to integr
 
 ----------
 
+## 👨‍💻 Authors
+Ads Kit is created and maintained by [Voxel Busters](https://github.com/voxelbusters).
+
+Core Authors & Maintainers:
+
+[Ashwin Kumar](https://github.com/itsashwinkumar) @itsashwinkumar
+
+[Ayyappa](https://github.com/manwithsteelnerves) @manwithsteelnerves
+
 ## **🛠️ Contributing to Ads Kit**
 
 Ads Kit is a **community-driven project**, and we welcome all contributions!
