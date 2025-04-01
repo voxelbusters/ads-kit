@@ -27,6 +27,14 @@ Ads Kit is an **open-source Unity plugin** that simplifies ad integration across
 ✅ **No-Code Solution** – Set up and manage ads **without writing any code**.
 
 ----------
+Setup
+
+[![Ads Kit for Unity – Demo](https://img.youtube.com/vi/zJJ2GnQcTYU/0.jpg)](https://youtu.be/zJJ2GnQcTYU)  
+
+No-Code workflow
+
+[![Ads Kit for Unity – Demo](https://img.youtube.com/vi/eFD7jvuM5vY/0.jpg)](https://youtu.be/eFD7jvuM5vY)   
+---
 
 ## **📌 Getting Started**
 
