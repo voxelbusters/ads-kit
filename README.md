@@ -1,5 +1,5 @@
 
-# **Ads Kit for Unity** – Unified Open-Source Ad Plugin
+# **Ads Kit for Unity** - Unified Open-Source Ad Integration Plugin
 
 ### **Monetize Your Unity Games with a Single API**
 
