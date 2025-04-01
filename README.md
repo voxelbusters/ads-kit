@@ -1,35 +1,164 @@
-## Cross Platform Ads Kit[In Progress]
 
-> Your All-in-One Advertising Solution! 🚀
+# **Ads Kit for Unity** – Unified Open-Source Ad Plugin
 
-Tired of juggling multiple ads plugins for iOS and Android separately? Say hello to the Cross Platform Ads Kit – your new best friend for making ads easy-peasy on both platforms with a single unified API!
+### **Monetize Your Unity Games with a Single API**
 
-##### 🌐 Awesome Ad Networks
+Ads Kit is an **open-source Unity plugin** that simplifies ad integration across multiple ad networks. With a **unified API**, you can easily manage **Banner, Interstitial, and Rewarded** ads, reducing the complexity of handling different SDKs.
 
-Supports AdMob, AppLovin, Level Play, Meta, LiftOff and Digital Turbine – the dream team of ad networks. You pick what works for you!
+🚀 **Currently Supported Ad Networks:**  
+✅ **Google AdMob**  
+✅ **AppLovin**  
+✅ **Unity Level Play**
 
-##### 🎨 Ad Magic, Any Format
+🔜 **Coming Soon:**  
+🔹 **Facebook/Meta Audience Network**  
+🔹 **LiftOff**
 
-Need banners, pop-ups, videos, or cool reward videos? Done and done! All the ad formats you love, all in one place.
+----------
 
-##### 🧩 No More Confusion
+## **✨ Features**
 
-Why use different plugins for different ad networks? Our kit brings them together, so you're not all over the place.
+✅ **One Unified API** – Load and show ads from multiple networks using a single interface.  
+✅ **Supports Banner, Interstitial, and Rewarded Ads** – A complete solution for your monetization needs.  
+✅ **Mediation & Prioritization** – Optimize revenue by setting **custom ad network priorities**.  
+✅ **Zero Extra Setup** – **Automatically configures** required details in `Info.plist` and `AndroidManifest.xml`.  
+✅ **Auto-Loading Ads** – Ads can be preloaded in the background for seamless display.  
+✅ **GDPR & Privacy Compliance** – Uses **Google’s UMP (User Messaging Platform)** for consent management.  
+✅ **No-Code Solution** – Set up and manage ads **without writing any code**.
 
-##### 🔒 GDPR Friendly
+----------
 
-Don't sweat GDPR – we've got a solution which complies with latest IAB standards (via AdMob's UMP). Safe and sound!
+## **📌 Getting Started**
 
-##### 🛠️ Zero Code, Big Impact 🛠️ 
+### **1️⃣ Install Ads Kit**
 
-Don't know coding? No worries! Our no-code option lets you add ads without the tech headache.
+Clone or download latest release from [GitHub Releases](https://github.com/voxelbusters/ads-kit/releases/latest) and import it into your Unity project.
+```
+git clone https://github.com/voxelbusters/ads-kit.git
+```
 
-##### 🔄 Ads on Autopilot
+### **2️⃣ Import Required Namespaces**
 
-Turn on auto-load and let the magic happen. Ads will appear at just the right time, keeping your users happy.
+Before using Ads Kit, add the required namespaces:
 
-##### 🤓 You're the Boss
+```
+using VoxelBusters.CoreLibrary; 
+using VoxelBusters.AdsKit;
+```
 
-Pick the best ad networks for your game, and set their priorities. It's like being in control of your own ad universe!
+### **3️⃣ Initialize Ads Kit**
 
-Don't miss out on this game-changer! Boost your game's money-making mojo with the Cross Platform Ads Kit today. 📈💰
+To start using Ads Kit, initialize it with a **consent form provider**:
+
+```
+public  void  InitialiseAdsManager(IConsentFormProvider consentProvider)
+{
+  var operation = AdsManager.Initialise(consentProvider);
+  operation.OnComplete += (result) =>
+    {
+      // Ads Kit is now ready!
+    };
+}
+``` 
+
+#### **Get Consent Form Provider**
+
+You can implement your own consent provider if you don't want the default consent provider (UPM from Google AdMob). Retrieve the available provider using:
+
+```
+private IConsentFormProvider GetConsentFormProvider()
+{
+    IConsentFormProvider availableProvider = AdServices.GetConsentFormProvider();
+
+    if (availableProvider == null)
+    {
+      throw  new Exception("No IConsentFormProvider found. Implement IConsentFormProvider or enable AdMob for default consent form provider.");
+    }
+
+    return availableProvider;
+}
+``` 
+
+----------
+
+## **🎯 Using Ads Kit**
+
+### **🔹 Load an Ad**
+
+```
+public  void  LoadAd(string placementId)
+{
+    AdsManager.LoadAd(placementId);
+}
+``` 
+
+### **🔹 Show an Ad**
+
+```
+public  void  ShowAd(string placementId)
+{
+    AdsManager.ShowAd(placementId);
+}
+```
+
+📌 **Ensure the ad is loaded before calling `ShowAd` if Auto Load is off.**
+
+### **🔹 Hide an Ad (For Banners Only)**
+
+```
+public  void  HideAd(string placementId)
+{
+    AdsManager.HideAd(placementId);
+}
+```
+
+📌 **Destroy the ad only if it’s no longer needed** (affects fill rate).
+
+```
+AdsManager.HideAd(placementId, destroy: true);
+```
+
+----------
+
+## **🎛️ Registering Ad Events**
+
+Track ad lifecycle events via **IAdLifeCycleListener** or attach callbacks to the `AsyncOperation` returned by API methods.
+
+```
+var operation = AdsManager.LoadAd("placementId");
+operation.OnComplete += (result) =>
+{   if (result.Success)
+    {
+        Debug.Log("Ad Loaded Successfully!");
+    }
+    else
+    {
+        Debug.LogError("Ad Failed to Load: " + result.Error);
+    }
+};
+``` 
+
+----------
+
+## **📢 No-Code Solution**
+
+If you prefer a **no-code implementation**, Ads Kit offers an easy way to integrate ads without writing a single line of code. Check the **No-Code Solution** section for more details.
+
+----------
+
+## **🛠️ Contributing to Ads Kit**
+
+Ads Kit is a **community-driven project**, and we welcome all contributions!
+
+💡 **Ways to contribute:**
+
+-   Fork the repo and submit a pull request
+    
+-   Report bugs and suggest new features
+    
+-   Improve documentation
+    
+
+🎉 A huge thanks to all our contributors who make Ads Kit better every day!
+
+🔗 **Start contributing today:** [GitHub Link](https://github.com/voxelbusters/ads-kit)
