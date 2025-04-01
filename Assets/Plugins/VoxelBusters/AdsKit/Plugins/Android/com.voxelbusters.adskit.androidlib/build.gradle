@@ -1,0 +1,39 @@
+apply plugin: 'android-library'
+
+dependencies {
+    implementation fileTree(dir: 'bin', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+def getUnityBuildToolsVersion() {
+    def unityLib = project(':unityLibrary').extensions.getByName('android')
+    return unityLib.buildToolsVersion
+}
+
+android {
+
+    if (project.android.hasProperty("namespace")) {
+        namespace "com.voxelbusters.essentialkitplugin"
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            //java.srcDirs = ['src']
+            res.srcDirs = ['res']
+            assets.srcDirs = ['assets']
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
+    compileSdk 35
+    buildToolsVersion getUnityBuildToolsVersion()
+    
+    defaultConfig {
+        minSdkVersion   21
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+}

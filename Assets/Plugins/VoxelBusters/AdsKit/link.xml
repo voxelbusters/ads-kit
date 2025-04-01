@@ -1,0 +1,8 @@
+﻿<linker>
+  <assembly fullname="VoxelBusters.AdsKit" preserve="all">
+  </assembly>
+
+  <assembly fullname="Assembly-CSharp-firstpass">
+    <namespace fullname="VoxelBusters.AdsKit.Adapters" preserve="all" />
+  </assembly>
+</linker>

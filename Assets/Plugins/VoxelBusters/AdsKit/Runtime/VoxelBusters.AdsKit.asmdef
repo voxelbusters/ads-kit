@@ -1,0 +1,17 @@
+{
+    "name": "VoxelBusters.AdsKit",
+    "references": [
+        "VoxelBusters.CoreLibrary",
+        "VoxelBusters.CoreLibrary.NativePlugins",
+        "UnityEngine.Advertisements"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

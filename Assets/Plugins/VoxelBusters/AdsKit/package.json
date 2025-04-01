@@ -1,0 +1,14 @@
+{
+  "name": "com.voxelbusters.adskit",
+  "displayName": "AdsKit",
+  "description": "Ads Kit for Unity",
+  "version": "1.0.0",
+  "unity": "2019.4",
+  "dependencies": {},
+  "keywords": [],
+  "author": {
+    "name": "",
+    "email": "support@voxelBusters.com",
+    "url": ""
+  }
+}
