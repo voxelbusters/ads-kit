@@ -26,6 +26,10 @@ Ads Kit is an **open-source Unity plugin** that simplifies ad integration across
 ✅ **GDPR & Privacy Compliance** – Uses **Google’s UMP (User Messaging Platform)** for consent management.  
 ✅ **No-Code Solution** – Set up and manage ads **without writing any code**.
 
+---
+[Feedback](https://ads-kit.canny.io/)
+[Support](https://discord.gg/Np4TK558ty)
+[Documentation(In-Progress)](https://adskit.voxelbusters.com/)
 ----------
 Setup
 
