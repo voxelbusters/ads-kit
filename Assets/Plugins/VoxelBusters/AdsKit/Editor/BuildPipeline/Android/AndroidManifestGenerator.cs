@@ -23,7 +23,6 @@ namespace VoxelBusters.AdsKit.Editor.Build.Android
             Manifest manifest = new Manifest();
             manifest.AddAttribute("xmlns:android", "http://schemas.android.com/apk/res/android");
             manifest.AddAttribute("xmlns:tools", "http://schemas.android.com/tools");
-            manifest.AddAttribute("package", s_androidLibraryRootPackageName + "plugin");
             manifest.AddAttribute("android:versionCode", "1");
             manifest.AddAttribute("android:versionName", "1.0");
             

@@ -13,7 +13,7 @@ def getUnityBuildToolsVersion() {
 android {
 
     if (project.android.hasProperty("namespace")) {
-        namespace "com.voxelbusters.essentialkitplugin"
+        namespace "com.voxelbusters.adskitplugin"
     }
 
     sourceSets {
