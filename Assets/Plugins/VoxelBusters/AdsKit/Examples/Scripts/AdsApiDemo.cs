@@ -126,8 +126,6 @@ namespace VoxelBusters.AdsKit.Demo
             }
             
             var operation = AdsManager.Initialise(consentFormProvider);
-
-            Debug.Log("*** Operation: " + operation);
             operation.OnComplete += (op) =>
             {
                 if (op.Error == null)

@@ -23,7 +23,7 @@ namespace VoxelBusters.AdsKit
 
         public string CurrencyCode { get; private set; }
 
-        public long Value { get; private set; }
+        public double Value { get; private set; }
 
         public PrecisionType Precision { get; private set; }
 
@@ -36,7 +36,7 @@ namespace VoxelBusters.AdsKit
                              string placement,
                              string networkId,
                              string currencyCode,
-                             long value,
+                             double value,
                              PrecisionType precision)
         {
             // Set properties
