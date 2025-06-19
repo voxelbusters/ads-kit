@@ -41,14 +41,23 @@ No-Code workflow
 ## **📌 Getting Started**
 
 ### **1️⃣ Install Ads Kit**
+#### ✅ Option 1: Unity Package
 
-Get latest unity package from [GitHub Releases](https://github.com/voxelbusters/ads-kit/releases/latest) and import it into your Unity project
+Download the latest `.unitypackage` from the [GitHub Releases](https://github.com/voxelbusters/ads-kit/releases/latest) page and import it into your Unity project.
 
-or
+#### ✅ Option 2: Git Clone (with CoreLibrary)
 
-Clone and merge contents of Assets folder with in your project.
+Clone the repository along with its dependency (`CoreLibrary`) using:
+
 ```
-git clone https://github.com/voxelbusters/ads-kit.git
+git clone --recurse-submodules https://github.com/voxelbusters/ads-kit.git
+```
+Copy the contents of the Assets folder into your Unity project.
+
+If you cloned without submodules, run:
+
+```
+git submodule update --init --recursive
 ```
 
 ### **2️⃣ Import Required Namespaces**
