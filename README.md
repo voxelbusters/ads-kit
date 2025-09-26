@@ -29,7 +29,7 @@ Ads Kit is an **open-source Unity plugin** that simplifies ad integration across
 ---
 [Feedback](https://ads-kit.canny.io/) | [Support](https://github.com/voxelbusters/ads-kit/issues) | [Documentation(In-Progress)](https://adskit.voxelbusters.com/)
 ----------
-Setup
+Setup (**Click on the images to play the video**)
 
 [![Ads Kit for Unity – Demo](https://img.youtube.com/vi/zJJ2GnQcTYU/0.jpg)](https://youtu.be/zJJ2GnQcTYU)  
 
