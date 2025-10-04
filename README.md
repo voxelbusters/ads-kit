@@ -62,7 +62,7 @@ git submodule update --init --recursive
 
 ### **2️⃣ Import Required Namespaces**
 
-Before using Ads Kit, add the required namespaces:
+Before using Ads Kit API methods in your script, add the required namespaces:
 
 ```
 using VoxelBusters.CoreLibrary; 
