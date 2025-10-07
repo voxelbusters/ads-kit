@@ -15,6 +15,10 @@ Ads Kit is an **open-source Unity plugin** that simplifies ad integration across
 🔹 **LiftOff**
 
 ----------
+## Updating?
+* Delete Assets/Plugins/VoxelBusters/CoreLibrary and Assets/Plugins/VoxelBusters/AdsKit folders
+* Import the latest Ads Kit package from [here](https://github.com/voxelbusters/ads-kit/releases/latest).
+----------
 
 ## **✨ Features**
 
