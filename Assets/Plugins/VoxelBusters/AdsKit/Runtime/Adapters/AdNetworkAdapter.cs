@@ -263,10 +263,6 @@ namespace VoxelBusters.AdsKit.Adapters
             Callback    eventFunc   = () =>
             {
                 DebugLogger.Log($"{AdsKitSettings.Domain}:{Name}", $"Sending LoadAd state change data. Placement: {stateInfo.Placement}. State: {stateInfo.PlacementState}.");
-                if(stateInfo.Error != null)
-                {
-                    Debug.LogError("Error info : " + stateInfo.Error);
-                }
 
                 OnLoadAdStateChange?.Invoke(this, stateInfo);
             };

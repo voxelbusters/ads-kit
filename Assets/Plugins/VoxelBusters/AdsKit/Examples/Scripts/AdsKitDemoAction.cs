@@ -5,7 +5,7 @@ using VoxelBusters.CoreLibrary.NativePlugins.DemoKit;
 
 namespace VoxelBusters.AdsKit.Demo
 {
-	public enum AdsApiDemoActionType
+	public enum AdsKitDemoActionType
 	{
 		RegisterListener = 1,
 		UnregisterListener,
@@ -17,6 +17,6 @@ namespace VoxelBusters.AdsKit.Demo
 		AdPlacementState
 	}
 
-	public class AdsApiDemoAction : DemoActionBehaviour<AdsApiDemoActionType> 
+	public class AdsKitDemoAction : DemoActionBehaviour<AdsKitDemoActionType> 
 	{ }
 }

@@ -1,3 +1,3 @@
 [submodule "Assets/Plugins/VoxelBusters/CoreLibrary"]
 	path = Assets/Plugins/VoxelBusters/CoreLibrary
-	url = https://bitbucket.org/voxelbusters/corelibrary.git
+url=https://github.com/voxelbusters/core-library.git

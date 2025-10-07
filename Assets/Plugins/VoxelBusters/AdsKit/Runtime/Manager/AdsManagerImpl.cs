@@ -323,7 +323,17 @@ namespace VoxelBusters.AdsKit
             switch (adType)
             {
                 case AdType.Banner:
-                    return m_adContentDefaultSettings.Banner;
+                    AdContentOptions bannerOptions = null;
+                    try
+                    {
+                        bannerOptions = (BannerAdOptions)m_adContentDefaultSettings.Banner;
+                    }
+                    catch
+                    {
+                        DebugLogger.LogError(AdsKitSettings.Domain, "Failed to get default banner options. Check in Ads Kit Settings if content options has any missing reference.");
+                    }
+
+                    return bannerOptions;
 
                 default:
                     return null;
@@ -843,7 +853,7 @@ namespace VoxelBusters.AdsKit
             }
             if (!IsConsentGranted())
             {
-                error   = AdError.ConsentNotAvailable;
+                error   = AdError.ConsentNotAvailable();
                 DebugLogger.LogError(AdsKitSettings.Domain, $"Discarding ad request. Error: {error}.");
                 return false;
             }

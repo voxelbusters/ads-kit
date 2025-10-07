@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 using UnityEngine;
 using VoxelBusters.AdsKit.Adapters;
@@ -132,14 +133,14 @@ namespace VoxelBusters.AdsKit
             if (placementMeta == null)
             {
                 DebugLogger.LogError(AdsKitSettings.Domain, $"No details found for placement id: {Placement}. Configure it in AdsKit settings -> Ad Placements.");
-                SetFailedWithError(AdError.ConfigurationNotFound);
+                SetFailedWithError(AdError.ConfigurationNotFound("No details found for the given placement."));
                 return;
             }
             var     adNetworks      = Manager.GetPreferredAdNetworks(placementMeta.AdType);
             if (adNetworks.Length == 0)
             {
                 DebugLogger.LogError(AdsKitSettings.Domain, $"No ad networks configured for placement id: {placementMeta.Name} of ad type: {placementMeta.AdType}.");
-                SetFailedWithError(AdError.ConfigurationNotFound);
+                SetFailedWithError(AdError.ConfigurationNotFound("No ad networks configured for the given placement."));
                 return;
             }
 
@@ -163,7 +164,7 @@ namespace VoxelBusters.AdsKit
                                                                    networkId: adNetwork.NetworkId,
                                                                    placement: Placement,
                                                                    placementState: AdPlacementState.NotAvailable,
-                                                                   error: AdError.Unknown);
+                                                                   error: AdError.ConfigurationNotFound("No details found for the given placement."));
 
                 DebugLogger.LogError(AdsKitSettings.Domain, $"{Placement} (placement id) and Ad Unit id mapping not found in {adNetwork.Name} settings. Open AdKitSettings to Configure in services section of {adNetwork.Name}");
 
@@ -214,7 +215,8 @@ namespace VoxelBusters.AdsKit
             }
             else
             {
-                var     error           = AdError.LoadFail;
+                var     lastAdState     = m_cachedStates.Last();
+                var     error           = AdError.LoadFail(lastAdState.Error?.Description);
                 SetIsCompleted(error);
             }
         }
@@ -275,6 +277,7 @@ namespace VoxelBusters.AdsKit
 
         protected override void DidReceiveLoadAdResponse(AdNetworkAdapter adNetwork, AdNetworkLoadAdStateInfo stateInfo)
         {
+            DebugLogger.Log(AdsKitSettings.Domain, $"Received LoadAd Response from {adNetwork.Name}. Placement: {stateInfo.Placement}. State: {stateInfo.PlacementState}. Error: {stateInfo.Error}.");
             UpdateCachedStateInfo(adNetwork, stateInfo);
 
             // Check whether any operation is completed
@@ -341,7 +344,7 @@ namespace VoxelBusters.AdsKit
         {
             UpdateCachedStateInfo(adNetwork, stateInfo);
 
-            if (AreAllRequestsCompleted())
+            if (AreAllRequestsCompleted()) //TODO: Ideally we need to pick the network which responds first to the request and then proceed - Cross check this
             {
                 ProcessLoadAdData();
             }

@@ -9,21 +9,12 @@ using VoxelBusters.CoreLibrary.NativePlugins.DemoKit;
 
 namespace VoxelBusters.AdsKit.Demo
 {
-	public class AdsApiDemo : DemoActionPanelBase<AdsApiDemoAction, AdsApiDemoActionType>, IAdLifecycleEventListener
+	public class AdsKitDemo : DemoActionPanelBase<AdsKitDemoAction, AdsKitDemoActionType>, IAdLifecycleEventListener
     {
         #region Fields
 
         [SerializeField]
         private     InputField      m_placementIdField;
-
-        [SerializeField]
-        private     Dropdown        m_consentDropdown;
-
-        [SerializeField]
-        private     GameObject      m_selectConsentOptionGO;
-
-        [SerializeField]
-        private     GameObject      m_requestConsentGO;
 
         #endregion
 
@@ -34,54 +25,54 @@ namespace VoxelBusters.AdsKit.Demo
             base.Start();
         }
 
-        protected override void OnActionSelectInternal(AdsApiDemoAction selectedAction)
+        protected override void OnActionSelectInternal(AdsKitDemoAction selectedAction)
         {
             switch (selectedAction.ActionType)
             {
-                case AdsApiDemoActionType.RegisterListener:
+                case AdsKitDemoActionType.RegisterListener:
                     Log("Register listener.");
                     RegisterListener();
                     break;
                     
-                case AdsApiDemoActionType.UnregisterListener:
+                case AdsKitDemoActionType.UnregisterListener:
                     Log("Unregister listener.");
                     UnregisterListener();
                     break;
 
-                case AdsApiDemoActionType.ConsentFormProviderAvailable:
+                case AdsKitDemoActionType.ConsentFormProviderAvailable:
                     Log("Checking if any consent form provider available.");
                     CheckIfConsentFormProviderIsAvailable();
                     break;
 
-                case AdsApiDemoActionType.Initialise:
+                case AdsKitDemoActionType.Initialise:
                     Log("Init with consent form provider.");
                     var consentFormProvider = GetConsentFormProvider();
                     //consentFormProvider.IsAgeRestrictedUser = false; //Enable if you want to set this property.
                     InitAdsManager(consentFormProvider);
                     break;
 
-                case AdsApiDemoActionType.LoadAd:
+                case AdsKitDemoActionType.LoadAd:
                     if (!AssertPropertyIsValid("placementId", m_placementIdField.text)) return;
 
                     Log("Initiating LoadAd request.");
                     LoadAd(m_placementIdField.text);
                     break;
 
-                case AdsApiDemoActionType.ShowAd:
+                case AdsKitDemoActionType.ShowAd:
                     if (!AssertPropertyIsValid("placementId", m_placementIdField.text)) return;
 
                     Log("Initiating ShowAd request.");
                     ShowAd(m_placementIdField.text);
                     break;
 
-                case AdsApiDemoActionType.HideAd:
+                case AdsKitDemoActionType.HideAd:
                     if (!AssertPropertyIsValid("placementId", m_placementIdField.text)) return;
 
                     Log("Initiating HideAd request.");
                     HideAd(m_placementIdField.text);
                     break;
 
-                case AdsApiDemoActionType.AdPlacementState:
+                case AdsKitDemoActionType.AdPlacementState:
                     if (!AssertPropertyIsValid("placementId", m_placementIdField.text)) return;
 
                     AdPlacementState state = AdsManager.GetAdPlacementState(placement: m_placementIdField.text);
@@ -124,7 +115,6 @@ namespace VoxelBusters.AdsKit.Demo
                 Log("Initialisation is in progress or already initialised.");
                 return;
             }
-            
             var operation = AdsManager.Initialise(consentFormProvider);
             operation.OnComplete += (op) =>
             {

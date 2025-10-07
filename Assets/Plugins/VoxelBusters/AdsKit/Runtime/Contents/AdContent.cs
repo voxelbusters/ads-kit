@@ -156,7 +156,7 @@ namespace VoxelBusters.AdsKit
         {
             if (!IsDone)
             {
-                SetIsCompleted(AdError.Unknown);
+                SetIsCompleted(AdError.Unknown());
                 return;
             }
         }

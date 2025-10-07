@@ -857,9 +857,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_placementIdField: {fileID: 692111024}
-  m_consentDropdown: {fileID: 0}
-  m_selectConsentOptionGO: {fileID: 0}
-  m_requestConsentGO: {fileID: 0}
 --- !u!1001 &305190241
 PrefabInstance:
   m_ObjectHideFlags: 0

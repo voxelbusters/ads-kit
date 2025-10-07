@@ -6,7 +6,7 @@ using VoxelBusters.CoreLibrary;
 
 namespace VoxelBusters.AdsKit.Demo
 {
-    public class AdsNoCodeDemo : MonoBehaviour
+    public class AdsKitNoCodeDemo : MonoBehaviour
     {
         
          public void OnAdsInitialisation()
