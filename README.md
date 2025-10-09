@@ -6,8 +6,8 @@
 Ads Kit is an **open-source Unity plugin** that simplifies ad integration across multiple ad networks. With a **unified API**, you can easily manage **Banner, Interstitial, and Rewarded** ads, reducing the complexity of handling different SDKs.
 
 🚀 **Currently Supported Ad Networks:**  
-✅ **Google AdMob**  [[10.5.0](https://github.com/googleads/googleads-mobile-unity/releases/tag/v10.5.0)]
-✅ **AppLovin** [[8.4.2](https://github.com/AppLovin/AppLovin-MAX-Unity-Plugin/releases/tag/release_8_4_2)] 
+✅ **Google AdMob**  [[10.5.0](https://github.com/googleads/googleads-mobile-unity/releases/tag/v10.5.0)] </br>
+✅ **AppLovin** [[8.4.2](https://github.com/AppLovin/AppLovin-MAX-Unity-Plugin/releases/tag/release_8_4_2)] </br>
 ✅ **Unity Level Play** [[9.0.0](https://github.com/ironsource-mobile/Unity-sdk/tree/master/9.0.0)]
 
 🔜 **Coming Soon:**  
