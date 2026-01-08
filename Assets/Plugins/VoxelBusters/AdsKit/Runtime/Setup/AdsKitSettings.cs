@@ -65,7 +65,7 @@ namespace VoxelBusters.AdsKit
                     s_package   = new UnityPackageDefinition(
                         name: "com.voxelbusters.adskit",
                         displayName: "Ads Kit",
-                        version: "2.1.2",
+                        version: "2.2.0",
                         defaultInstallPath: $"Assets/Plugins/VoxelBusters/AdsKit");
                 }
                 return s_package;

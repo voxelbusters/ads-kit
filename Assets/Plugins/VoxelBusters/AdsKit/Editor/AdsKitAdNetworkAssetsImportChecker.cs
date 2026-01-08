@@ -10,6 +10,11 @@ namespace VoxelBusters.AdsKit.Editor
         [InitializeOnLoadMethod]
         private static void Init()
         {
+            if (EditorApplication.isPlayingOrWillChangePlaymode)
+            {
+                return;
+            }
+
             if(AdsKitSettingsEditorUtility.TryGetDefaultSettings(out var Settings))
             {
                 var adNetworkAssets   = AssetImportManager.FindAssets();

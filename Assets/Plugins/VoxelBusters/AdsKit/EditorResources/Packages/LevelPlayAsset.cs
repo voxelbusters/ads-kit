@@ -13,7 +13,7 @@ namespace VoxelBusters.AdsKit.Editor.Clients
                    description: "Created by the leading mobile game engine Unity and Iron Source.",
                    importPaths: new string[]
                    {
-                       "https://github.com/ironsource-mobile/Unity-sdk/releases/latest", //Tested until 8.7.0
+                       "https://github.com/ironsource-mobile/Unity-sdk/releases/latest", // 9.2.0 from 8.7.0
                        $"{AdsKitSettings.Package.GetEditorResourcesPath()}/Packages/LevelPlayAdapter.unitypackage",
                    },
                    installPaths: new string[]
