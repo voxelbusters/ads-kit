@@ -26,7 +26,10 @@ namespace VoxelBusters.AdsKit
 
         [SerializeField]
         [Tooltip("When auto load is enabled for an ad placement, this value (in seconds) determines the wait time before attempting another load request after a failure.")]
-        private     int                     m_autoLoadRetryDelay = 15;
+        private int                         m_autoLoadRetryDelay = 15;
+
+        [SerializeField]
+        private string                      m_userTrackingUsageDescription = "This identifier will be used by advertising networks to deliver personalized ads based on your interests.";
 
         [SerializeField]
         private     bool                    m_autoInitOnStart;
@@ -116,6 +119,12 @@ namespace VoxelBusters.AdsKit
         {
             get => m_autoLoadRetryDelay;
             internal set => m_autoLoadRetryDelay = value;
+        }
+
+        public string UserTrackingUsageDescription
+        {
+            get => m_userTrackingUsageDescription;
+            internal set => m_userTrackingUsageDescription = value;
         }
 
         public LoadAdMode LoadAdMode
@@ -235,6 +244,22 @@ namespace VoxelBusters.AdsKit
             return false;
         }
 
+        public bool HasAnyAdNetworksEnabled()
+        {
+            bool anyEnabled = false;
+
+            foreach (var each in m_networkSettingsArray)
+            {
+                if (each.IsEnabled)
+                {
+                    anyEnabled = true;
+                    break;
+                }
+            }
+
+            return anyEnabled;
+        }
+
         #endregion
 
 #region Overriden methods
@@ -286,22 +311,6 @@ namespace VoxelBusters.AdsKit
             }
 
             return anyInvalidPlacements;
-        }
-
-        private bool HasAnyAdNetworksEnabled()
-        {
-            bool anyEnabled = false;
-
-            foreach (var each in m_networkSettingsArray)
-            {
-                if (each.IsEnabled)
-                {
-                    anyEnabled = true;
-                    break;
-                }
-            }
-
-            return anyEnabled;
         }
 
 #endif

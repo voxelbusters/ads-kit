@@ -208,25 +208,25 @@ namespace VoxelBusters.AdsKit.Editor
         private void DrawGeneralTabView()
         {
             EditorGUILayout.BeginVertical(GroupBackgroundStyle);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("m_isEnabled"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("m_isDebugBuild"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("m_autoLoadRetryDelay"));
-            //EditorGUILayout.PropertyField(serializedObject.FindProperty("m_autoInitOnStart"));
-            //EditorGUILayout.PropertyField(serializedObject.FindProperty("m_loadAdMode"));
+            CustomDrawProperty("m_isEnabled");
+            CustomDrawProperty("m_isDebugBuild");
+            CustomDrawProperty("m_autoLoadRetryDelay");
+            CustomDrawProperty("m_userTrackingUsageDescription");
+            GUILayout.Space(3f);
             EditorGUILayout.EndVertical();
 
-            var     networkPreferenceSection    = new EditorSectionInfo(displayName: "Ad Network Preferences",
+            var networkPreferenceSection = new EditorSectionInfo(displayName: "Ad Network Preferences",
                                                                         property: serializedObject.FindProperty("m_networkPreferenceMeta"),
                                                                         drawStyle: EditorSectionDrawStyle.Expand,
                                                                         description: "Customize Preferred Ad Networks for Each Ad Type.");
-            var     placementsSection           = new EditorSectionInfo(displayName: "Ad Placements",
+            var placementsSection = new EditorSectionInfo(displayName: "Ad Placements",
                                                                         property: serializedObject.FindProperty("m_placementMetaArray"),
                                                                         drawStyle: EditorSectionDrawStyle.Expand,
                                                                         description: "Configure Ads to be Displayed.");
-            var     adContentSettingsSection    = new EditorSectionInfo(displayName: "Ad Content Default Settings",
+            var adContentSettingsSection = new EditorSectionInfo(displayName: "Ad Content Default Settings",
                                                                         property: serializedObject.FindProperty("m_adContentDefaultSettings"),
                                                                         drawStyle: EditorSectionDrawStyle.Expand);
-            var     testDevicesSection          = new EditorSectionInfo(displayName: "Test Devices",
+            var testDevicesSection = new EditorSectionInfo(displayName: "Test Devices",
                                                                         property: serializedObject.FindProperty("m_testDevices"),
                                                                         drawStyle: EditorSectionDrawStyle.Expand,
                                                                         description: "Add List of Devices for Testing.");
@@ -243,6 +243,16 @@ namespace VoxelBusters.AdsKit.Editor
                                       showDetails: true,
                                       selectable: false);
             UpdatePlacementOptions();
+        }
+        
+        private void CustomDrawProperty(string propertyName)
+        {
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                var property = serializedObject.FindProperty(propertyName);
+                EditorGUILayout.LabelField(property.displayName, GUILayout.Width(200));
+                EditorGUILayout.PropertyField(property, GUIContent.none, GUILayout.ExpandWidth(true));
+            }
         }
 
         private void DrawMiscTabView()

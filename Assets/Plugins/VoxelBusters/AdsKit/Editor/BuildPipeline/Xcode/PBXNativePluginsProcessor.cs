@@ -15,7 +15,7 @@ namespace VoxelBusters.AdsKit.Editor.Build.Xcode
 #region Properties
         private AdsKitSettings Settings { get; set; }
 
-#endregion
+        #endregion
 
         #region Base class methods
         public override void OnUpdateInfoPlist(PlistDocument doc)
@@ -24,22 +24,44 @@ namespace VoxelBusters.AdsKit.Editor.Build.Xcode
             if (!EnsureInitialised()) return;
 
             // Add entries in info.plist
+            // Add usage permissions
+            var rootDict = doc.root;
+            var permissions = GetUsagePermissions();
+            foreach (string key in permissions.Keys)
+            {
+                rootDict.SetString(key, permissions[key]);
+            }
 
             if (Settings.HasAdNetworkEnabled(AdNetworkServiceId.kLevelPlay))
             {
-                var     rootDict    = doc.root;
-                
                 // For arbitrary network loads
                 AllowArbitraryLoads(rootDict);
-                
+
                 // Add SKAdNetworkIdentifier entries
                 AddSkAdNetworkItem(rootDict);
             }
         }
+
+        #region Private methods
+
+        private Dictionary<string, string> GetUsagePermissions()
+        {
+            var requiredPermissionsDict = new Dictionary<string, string>(4);
+            var trackingUsageDesription = Settings.UserTrackingUsageDescription;
+
+            if (Settings.HasAnyAdNetworksEnabled())
+            {
+                requiredPermissionsDict["NSUserTrackingUsageDescription"] = trackingUsageDesription; //Replace with InfoPlistKey.kNSUserTrackingUsage
+            }
+
+            return requiredPermissionsDict;
+        }
+
         private void AllowArbitraryLoads(PlistElementDict rootDict)
         {
             rootDict.CreateDict(InfoPlistKey.kNSAppTransportSecurity).SetBoolean(InfoPlistKey.kNSAllowsArbitraryLoads, false);
         }
+
         private void AddSkAdNetworkItem(PlistElementDict rootDict)
         {
 
@@ -54,8 +76,6 @@ namespace VoxelBusters.AdsKit.Editor.Build.Xcode
         }
 
         #endregion
-
-#region Private methods
 
         private bool EnsureInitialised()
         {
