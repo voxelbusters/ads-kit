@@ -38,7 +38,7 @@ namespace VoxelBusters.AdsKit.Editor.Build.Xcode
         }
         private void AllowArbitraryLoads(PlistElementDict rootDict)
         {
-            rootDict.CreateDict(InfoPlistKey.kNSAppTransportSecurity).SetBoolean(InfoPlistKey.kNSAllowsArbitraryLoads, false);
+            rootDict.CreateDict(InfoPlistKey.kNSAppTransportSecurity).SetBoolean(InfoPlistKey.kNSAllowsArbitraryLoads, true);
         }
         private void AddSkAdNetworkItem(PlistElementDict rootDict)
         {
