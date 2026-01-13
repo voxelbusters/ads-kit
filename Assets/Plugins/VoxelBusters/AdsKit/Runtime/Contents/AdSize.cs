@@ -103,14 +103,19 @@ namespace VoxelBusters.AdsKit
         #endregion
 
         #region Comparision methods
-        
+
         public override bool Equals(object obj)
         {
             if (obj == null)
                 return false;
-            
+
             var other = (AdSize)obj;
             return other.m_width == m_width && other.m_height == m_height && other.m_type == m_type && other.m_anchorOrientation == m_anchorOrientation;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
 
         #endregion

@@ -19,16 +19,19 @@ namespace VoxelBusters.AdsKit
         #region Fields
 
         [SerializeField]
+        [Tooltip("This enables or disables the whole plugin. Keep it enabled to use this plugin.")]
         private     bool                    m_isEnabled;
 
         [SerializeField]
-        private     bool                    m_isDebugBuild;
+        [Tooltip("When enabled, this setting will force the SDK to run in test mode. By default when in development build mode, the plugin will run in test mode.")]
+        private     bool                    m_forceTestMode;
 
         [SerializeField]
         [Tooltip("When auto load is enabled for an ad placement, this value (in seconds) determines the wait time before attempting another load request after a failure.")]
         private int                         m_autoLoadRetryDelay = 15;
 
         [SerializeField]
+        [Tooltip("This will be used for setting permission usage descriptions on native platforms (for ex: NSUserTrackingUsageDescription on iOS).")]
         private string                      m_userTrackingUsageDescription = "This identifier will be used by advertising networks to deliver personalized ads based on your interests.";
 
         [SerializeField]
@@ -109,10 +112,15 @@ namespace VoxelBusters.AdsKit
             private set => m_autoInitOnStart    = value;
         }
 
-        public bool IsDebugBuild
+        public bool IsTestMode
         {
-            get => m_isDebugBuild;
-            internal set => m_isDebugBuild  = value;
+            get => m_forceTestMode || Debug.isDebugBuild;
+        }
+        
+        public bool ForceTestMode
+        {
+            get => m_forceTestMode;
+            internal set => m_forceTestMode = value;
         }
 
         public int AutoLoadRetryDelay
@@ -168,7 +176,7 @@ namespace VoxelBusters.AdsKit
         #region Static methods
 
         public static AdsKitSettings Create(bool isEnabled = true,
-                                            bool isDebugBuild = false,
+                                            bool forceTestMode = false,
                                             bool autoInitOnStart = false,
                                             LoadAdMode loadAdMode = LoadAdMode.Sequential,
                                             AdPlacementMeta[] placementMetaArray = null,
@@ -179,7 +187,7 @@ namespace VoxelBusters.AdsKit
         {
             var     newInstance                 = CreateInstance<AdsKitSettings>();
             newInstance.IsEnabled               = isEnabled;
-            newInstance.IsDebugBuild            = isDebugBuild;
+            newInstance.ForceTestMode           = forceTestMode;
             newInstance.AutoInitOnStart         = autoInitOnStart;
             newInstance.LoadAdMode              = loadAdMode;
             newInstance.NetworkPreferenceMeta   = networkPreferenceMeta ?? new AdNetworkPreferenceMeta();

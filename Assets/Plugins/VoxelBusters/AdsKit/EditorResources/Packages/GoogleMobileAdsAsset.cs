@@ -1,4 +1,5 @@
 ﻿#if UNITY_EDITOR
+using System.Collections.Generic;
 using VoxelBusters.CoreLibrary;
 
 namespace VoxelBusters.AdsKit.Editor.Clients
@@ -21,7 +22,7 @@ namespace VoxelBusters.AdsKit.Editor.Clients
                        "Assets/GoogleMobileAds",
                        $"{AdsKitSettings.Package.GetGeneratedPath()}/AdMob",
                    })
-        { }
+        {}
 
         #endregion
     }

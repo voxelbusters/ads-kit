@@ -209,7 +209,7 @@ namespace VoxelBusters.AdsKit.Editor
         {
             EditorGUILayout.BeginVertical(GroupBackgroundStyle);
             CustomDrawProperty("m_isEnabled");
-            CustomDrawProperty("m_isDebugBuild");
+            CustomDrawProperty("m_forceTestMode");
             CustomDrawProperty("m_autoLoadRetryDelay");
             CustomDrawProperty("m_userTrackingUsageDescription");
             GUILayout.Space(3f);
@@ -250,7 +250,8 @@ namespace VoxelBusters.AdsKit.Editor
             using (new EditorGUILayout.HorizontalScope())
             {
                 var property = serializedObject.FindProperty(propertyName);
-                EditorGUILayout.LabelField(property.displayName, GUILayout.Width(200));
+                var label = new GUIContent(property.displayName, property.tooltip);
+                EditorGUILayout.LabelField(label, GUILayout.Width(200));
                 EditorGUILayout.PropertyField(property, GUIContent.none, GUILayout.ExpandWidth(true));
             }
         }

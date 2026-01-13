@@ -78,6 +78,49 @@ namespace VoxelBusters.AdsKit.Demo
                     AdPlacementState state = AdsManager.GetAdPlacementState(placement: m_placementIdField.text);
                     Log("Ad placement state: " + state);
                     break;
+
+                case AdsKitDemoActionType.ShowAdMobAdDebugger:
+                    AdsManager.AdMob.LaunchAdDebugger((bool isSuccess, Error error) =>
+                    {
+                        if (isSuccess)
+                        {
+                            Log("AdMob ad debugger launched successfully.");
+                        }
+                        else
+                        {
+                            Log("Failed to launch AdMob ad debugger. Error: " + error);
+                            Log("If you haven't added the test device id in Ads Kit Settings -> Test Device Ids yet, look for the test device id in the debug logs with text like - `Use RequestConfiguration.Builder().setTestDeviceIds` and add the test device id in the Ads Kit Settings. This is usually the ANDROID_ID on Android and IDFA on iOS" );
+                        }
+                    });
+                    break;
+                case AdsKitDemoActionType.ShowAppLovinAdDebugger:
+                    AdsManager.AppLovin.LaunchAdDebugger((bool isSuccess, Error error) =>
+                    {
+                        if (isSuccess)
+                        {
+                            Log("AppLovin ad debugger launched successfully.");
+                        }
+                        else
+                        {
+                            Log("Failed to launch AppLovin ad debugger. Error: " + error);
+                        }
+                    });
+                    break;
+
+                case AdsKitDemoActionType.ShowLevelPlayAdDebugger:
+                    AdsManager.LevelPlay.LaunchAdDebugger((bool isSuccess, Error error) =>
+                    {
+                        if (isSuccess)
+                        {
+                            Log("LevelPlay ad debugger launched successfully.");
+                        }
+                        else
+                        {
+                            Log("Failed to launch LevelPlay ad debugger. Error: " + error);
+                        }
+                    });
+                    break;
+                    
             }
         }
 

@@ -29,7 +29,7 @@ namespace VoxelBusters.AdsKit.Editor
                     continue;
 
                 // Get existing keys
-                networkSettings.GetApiKeysForPlatform(ApplicationServices.GetActiveOrSimulationPlatform(), settings.IsDebugBuild, out string apiKey, out string apiSecret);
+                networkSettings.GetApiKeysForPlatform(ApplicationServices.GetActiveOrSimulationPlatform(), settings.IsTestMode, out string apiKey, out string apiSecret);
 
                 try
                 {

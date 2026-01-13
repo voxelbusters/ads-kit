@@ -14,6 +14,8 @@ namespace VoxelBusters.AdsKit.Adapters
         private     Dictionary<string, bool>                m_adClickData;
 
         private     Dictionary<string, AdContentOptions>    m_adOptionsData;
+        
+        protected   bool                                    m_isTestMode;
 
         #endregion
 
@@ -90,6 +92,12 @@ namespace VoxelBusters.AdsKit.Adapters
 
         #endregion
 
+        #region Testing methods
+
+        public abstract void LaunchAdDebugger(EventCallback<bool> callback = null);
+
+        #endregion
+
         #region Ad methods
 
         public abstract AdPlacementState GetPlacementState(string placement);
@@ -138,19 +146,19 @@ namespace VoxelBusters.AdsKit.Adapters
 
         public AdMeta GetAdMetaWithAdUnitId(string adUnitId, RuntimePlatform platform)
         {
-            return System.Array.Find(AdMetaArray, (item) => string.Equals(adUnitId, item.GetAdUnitIdForPlatform(platform)));
+            return System.Array.Find(AdMetaArray, (item) => string.Equals(adUnitId, item.GetAdUnitIdForPlatform(platform, m_isTestMode)));
         }
 
         public AdMeta GetAdMetaWithAdUnitId(string adUnitId)
         {
-            return System.Array.Find(AdMetaArray, (item) => string.Equals(adUnitId, item.GetAdUnitIdForActiveOrSimulationPlatform()));
+            return System.Array.Find(AdMetaArray, (item) => string.Equals(adUnitId, item.GetAdUnitIdForActiveOrSimulationPlatform(m_isTestMode)));
         }
 
         public AdViewProxy GetAdViewProxy(string placement)
         {
-            var     adMeta          = GetAdMetaWithPlacement(placement);
-            string  adUnitId        = adMeta.GetAdUnitIdForActiveOrSimulationPlatform();
-            var placementMeta       = GetAdPlacementMeta(placement);
+            var adMeta = GetAdMetaWithPlacement(placement);
+            string adUnitId = adMeta.GetAdUnitIdForActiveOrSimulationPlatform(m_isTestMode);
+            var placementMeta = GetAdPlacementMeta(placement);
 
             return GetAdViewProxy(placementMeta.AdType, adUnitId);
         }
@@ -205,6 +213,15 @@ namespace VoxelBusters.AdsKit.Adapters
 
         protected virtual AdViewProxy GetAdViewProxy(AdType adType, string adUnitId) => null;
 
+        protected bool IsConfigValidForAdDebuggerUsage()
+        {
+            if (!m_isTestMode)
+            {
+                DebugLogger.LogWarning($"{AdsKitSettings.Domain}:{Name}", "Ad Debugger can only be used in test mode (Development build mode or enabling Force Test Mode in Ads Kit Settings.)");
+                return false;
+            }
+            return true;
+        } 
 
         #endregion
 
@@ -221,9 +238,9 @@ namespace VoxelBusters.AdsKit.Adapters
             Assert.IsArgNotNull(manager, nameof(manager));
 
             // Set property values
-            Name                    = name;
-            NetworkId               = networkId;
-            Manager                 = manager;
+            Name = name;
+            NetworkId = networkId;
+            Manager = manager;
         }
 
         internal bool HasPlacement(string placement)
