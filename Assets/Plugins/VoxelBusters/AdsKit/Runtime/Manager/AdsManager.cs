@@ -29,7 +29,7 @@ namespace VoxelBusters.AdsKit
         /// <summary>
         /// Returns true if the SDK is is in debug mode.
         /// </summary>
-        public static bool IsDebugBuild => IsAvailable() && SharedInstance.IsDebugBuild;
+        public static bool IsTestMode => IsAvailable() && SharedInstance.IsTestMode;
 
         /// <summary>
         /// Returns AdMob adapter reference.
@@ -56,13 +56,21 @@ namespace VoxelBusters.AdsKit
         {
             // Create manager object
             CallbackDispatcher.Initialize();
-            var     settings    = AdsKitSettings.Instance;
+            var settings = AdsKitSettings.Instance;
 
-            if(settings.IsDebugBuild)
+            // Set log level
+            bool isDebugBuild = Debug.isDebugBuild
+#if NATIVE_PLUGINS_DEBUG
+            || true
+#endif
+            ;
+            
+            if (isDebugBuild)
             {
                 DebugLogger.SetLogLevel(DebugLogger.LogLevel.Info, new string[] { AdsKitSettings.Domain });
                 DebugLogger.SetLogLevel(DebugLogger.LogLevel.Info);
             }
+            
 
             if (settings.IsEnabled)
             {

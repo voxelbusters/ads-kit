@@ -12,9 +12,12 @@ namespace VoxelBusters.AdsKit.Demo
 		ConsentFormProviderAvailable,
 		Initialise,
 		LoadAd,
-        ShowAd,
-        HideAd,
-		AdPlacementState
+		ShowAd,
+		HideAd,
+		AdPlacementState,
+		ShowAdMobAdDebugger,
+		ShowAppLovinAdDebugger,
+		ShowLevelPlayAdDebugger
 	}
 
 	public class AdsKitDemoAction : DemoActionBehaviour<AdsKitDemoActionType> 

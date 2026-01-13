@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -15,7 +16,11 @@ namespace VoxelBusters.AdsKit
         private     string                      m_placement;
 
         [SerializeField, FormerlySerializedAs("m_placementIdOverrides")]
-        private     RuntimePlatformConstantSet  m_adUnitIds;
+        private RuntimePlatformConstantSet      m_adUnitIds;
+
+        [SerializeField]
+        //[HideInInspector]
+        private     RuntimePlatformConstantSet  m_testAdUnitIds; //Fill these ids based on the network id type and knowing placement meta details (banner options) at build time.
 
         #endregion
 
@@ -43,14 +48,31 @@ namespace VoxelBusters.AdsKit
 
         #region Public methods
 
-        public string GetAdUnitIdForPlatform(RuntimePlatform platform)
+        public string GetAdUnitIdForPlatform(RuntimePlatform platform, bool isTestMode)
         {
-            return m_adUnitIds.GetConstantForPlatform(platform: platform, defaultValue: null);
+            string adUnitId = null;
+
+            if (isTestMode)
+            {
+                adUnitId = m_testAdUnitIds.GetConstantForPlatform(platform: platform, defaultValue: null);
+            }
+
+            if (adUnitId == null)
+            {
+                adUnitId = m_adUnitIds.GetConstantForPlatform(platform: platform, defaultValue: null);
+            }
+
+            return adUnitId;
         }
 
-        public string GetAdUnitIdForActiveOrSimulationPlatform()
+        public string GetAdUnitIdForActiveOrSimulationPlatform(bool isTestMode)
         {
-            return GetAdUnitIdForPlatform(platform: ApplicationServices.GetActiveOrSimulationPlatform());
+            return GetAdUnitIdForPlatform(platform: ApplicationServices.GetActiveOrSimulationPlatform(), isTestMode: isTestMode);
+        }
+
+        public void SetTestAdUnitId(RuntimePlatformConstantSet testAdUnitIdSet)
+        {
+            m_testAdUnitIds = testAdUnitIdSet;
         }
 
         #endregion

@@ -134,10 +134,10 @@ namespace VoxelBusters.AdsKit
 
         #region Public methods
 
-        public void GetApiKeysForPlatform(RuntimePlatform platform, bool isDebugMode,
+        public void GetApiKeysForPlatform(RuntimePlatform platform, bool isTestMode,
                                           out string apiKey, out string apiSecret)
         {
-            if (isDebugMode && !string.IsNullOrEmpty(DebugApiKey))
+            if (isTestMode && !string.IsNullOrEmpty(DebugApiKey))
             {
                 apiKey      = DebugApiKey;
                 apiSecret   = DebugApiSecret;

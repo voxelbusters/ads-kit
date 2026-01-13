@@ -15,7 +15,7 @@ namespace VoxelBusters.AdsKit.Adapters
 
         public ApplicationPrivacyConfiguration PrivacyConfiguration { get; private set; }
 
-        public bool IsDebugBuild { get; private set; }
+        public bool IsTestMode { get; private set; }
 
         public string Data { get; private set; }
 
@@ -25,13 +25,13 @@ namespace VoxelBusters.AdsKit.Adapters
         #region Constructors
 
         public AdNetworkInitialiseProperties(string apiKey, string apiSecret, ApplicationPrivacyConfiguration privacyConfiguration,
-            bool isDebugBuild, string data = null)
+            bool isTestMode, string data = null)
         {
             // Set properties
             ApiKey                  = apiKey;
             ApiSecret               = apiSecret;
             PrivacyConfiguration    = privacyConfiguration;
-            IsDebugBuild            = isDebugBuild;
+            IsTestMode           = isTestMode;
             Data                    = data;
         }
 

@@ -40,9 +40,9 @@ namespace VoxelBusters.AdsKit
 
         private     List<AdContent>                                     m_activeAdContents;
 
-        private     bool                                                m_isDebugBuild;
+        private     bool                                                m_isTestMode;
 
-        private     ApplicationPrivacyConfiguration                     m_privacyConfig;
+        private     ApplicationPrivacyConfiguration                      m_privacyConfig;
 
         private     User                                                m_user;
 
@@ -67,7 +67,7 @@ namespace VoxelBusters.AdsKit
 
         public bool IsInitialisedOrWillChange => IsInitialised || (m_initAdNetworksOperation != null) || (m_initConsentOperation != null);
 
-        public bool IsDebugBuild => m_isDebugBuild;
+        public bool IsTestMode => m_isTestMode;
 
         public LoadAdMode PreferredLoadAdMode { get; set; }
 
@@ -186,7 +186,7 @@ namespace VoxelBusters.AdsKit
                               adContentDefaultSettings: settings.AdContentDefaultSettings,
                               testDevices: settings.TestDevices,
                               consentFormProvider: consentFormProvider,
-                              isDebugBuild: settings.IsDebugBuild);
+                              isTestMode: settings.IsTestMode);
         }
 
         public IAsyncOperation<InitialiseResult> Initialise(AdNetworkSettings[] networkSettingsArray,
@@ -196,7 +196,7 @@ namespace VoxelBusters.AdsKit
                                                             DeviceCollection testDevices,
                                                             LoadAdMode loadAdMode,
                                                             IConsentFormProvider consentFormProvider,
-                                                            bool isDebugBuild
+                                                            bool isTestMode
                                                             )
         {
             // Guard case
@@ -211,7 +211,7 @@ namespace VoxelBusters.AdsKit
             m_adContentDefaultSettings  = adContentDefaultSettings;
             m_testDevices               = testDevices;
             PreferredLoadAdMode         = loadAdMode;
-            m_isDebugBuild              = isDebugBuild || Application.isEditor;
+            m_isTestMode                = isTestMode;
 
             // Start consent operation and then initialise ad networks
             m_initConsentOperation = new InitialiseAfterConsentOperation(consentFormProvider, config =>
@@ -223,7 +223,7 @@ namespace VoxelBusters.AdsKit
                 m_initAdNetworksOperation = new InitialiseAdNetworksOperation(manager: this,
                                                                       networkSettingsArray: m_networkSettingsArray,
                                                                       privacyConfiguration: config,
-                                                                      isDebugBuild: m_isDebugBuild);
+                                                                      isTestMode: m_isTestMode);
                 m_initAdNetworksOperation.Start();
                 return m_initAdNetworksOperation;
             });
@@ -589,7 +589,7 @@ namespace VoxelBusters.AdsKit
         public void SetOrientation(ScreenOrientation orientation)
         {
             // Cache new value
-            m_orientation   = orientation;
+            m_orientation = orientation;
 
             // Update internal state
             if (IsActiveAndInitialised())
@@ -597,7 +597,7 @@ namespace VoxelBusters.AdsKit
                 ExecuteNetworkFunction((network) => network.SetOrientation(orientation));
             }
         }
-
+        
         #endregion
 
         #region Private methods

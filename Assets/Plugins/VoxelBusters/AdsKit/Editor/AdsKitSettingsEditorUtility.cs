@@ -155,7 +155,7 @@ namespace VoxelBusters.AdsKit.Editor
             BannerAdOptionsAsset bannerAdOptionsAsset = UnityEditor.AssetDatabase.LoadAssetAtPath<BannerAdOptionsAsset>(path);
             if (bannerAdOptionsAsset == null)
             {
-                bannerAdOptionsAsset = BannerAdOptionsAsset.Create(AdPosition.Create(AdPositionPreset.BottomCenter), AdSizeName.FullBanner);
+                bannerAdOptionsAsset = BannerAdOptionsAsset.Create(AdPosition.Create(AdPositionPreset.BottomCenter), "Custom", new AdSize(0, 0 , AdSize.AdSizeType.AnchoredAdaptive, ScreenOrientation.AutoRotation));
                 AssetDatabaseUtility.CreateAssetAtPath(bannerAdOptionsAsset, path);
                 UnityEditor.AssetDatabase.Refresh();
             }

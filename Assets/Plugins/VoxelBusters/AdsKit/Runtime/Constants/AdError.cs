@@ -69,6 +69,12 @@ namespace VoxelBusters.AdsKit
                 description: message ?? "Configuration not found.");
         }
 
+        public static Error NotTestMode(string message = null)
+        {
+            return CreateError(code: AdErrorCode.kConfigurationNotFound,
+                description: message ?? "Test mode configuration is not enabled.");
+        }
+
         public static Error CreateError(int code, string description) => new Error(domain: kDomainName,
                                                                                    code: code,
                                                                                    description: description);

@@ -11,7 +11,7 @@ namespace VoxelBusters.AdsKit
         #region Properties
 
         int Priority { get; }
-        
+
         bool? IsAgeRestrictedUser { get; set; }
 
         #endregion

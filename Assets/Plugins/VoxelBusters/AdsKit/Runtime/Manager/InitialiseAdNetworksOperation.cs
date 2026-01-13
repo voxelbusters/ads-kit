@@ -14,8 +14,8 @@ namespace VoxelBusters.AdsKit
 
         private     AdNetworkSettings[]             m_networkSettingsArray;
 
-        private     bool                            m_isDebugBuild;
-
+        private     bool                            m_isTestMode;
+        
         private     AdNetworkRuntimeImplMeta[]      m_runtimeImplMetaArray;
 
         private     AdNetworkAdapter[]              m_adNetworks;
@@ -37,18 +37,18 @@ namespace VoxelBusters.AdsKit
         internal InitialiseAdNetworksOperation(AdsManagerImpl manager,
                                      AdNetworkSettings[] networkSettingsArray,
                                      ApplicationPrivacyConfiguration privacyConfiguration,
-                                     bool isDebugBuild
+                                     bool isTestMode
                                      )
         {
             Assert.IsNotNullOrEmpty(networkSettingsArray, "Enable atleast one ad network in AdsKit Settings -> Services. Ad network settings array");
 
             // Set properties
-            Manager                     = manager;
-            m_networkSettingsArray      = networkSettingsArray;
-            m_isDebugBuild              = isDebugBuild;
-            m_runtimeImplMetaArray      = Helpers.FindAllRuntimeImplMeta();
+            Manager                    = manager;
+            m_networkSettingsArray     = networkSettingsArray;
+            m_isTestMode               = isTestMode;
+            m_runtimeImplMetaArray     = Helpers.FindAllRuntimeImplMeta();
             m_privacyConfiguration      = privacyConfiguration;
-            m_stateArray                = null;
+            m_stateArray               = null;
         }
 
         #endregion
@@ -110,12 +110,12 @@ namespace VoxelBusters.AdsKit
             {
                 var     instance        = Helpers.FindAdNetwork(m_adNetworks, state.NetworkId);
                 var     networkSettings = FindSettings(state.NetworkId);
-                networkSettings.GetApiKeysForPlatform(ApplicationServices.GetActiveOrSimulationPlatform(), m_isDebugBuild, out string apiKey, out string apiSecret);
+                networkSettings.GetApiKeysForPlatform(ApplicationServices.GetActiveOrSimulationPlatform(), m_isTestMode, out string apiKey, out string apiSecret);
 
                 var     initProperties  = new AdNetworkInitialiseProperties(apiKey,
                                                                             apiSecret,
                                                                             m_privacyConfiguration,
-                                                                            m_isDebugBuild,
+                                                                            m_isTestMode,
                                                                             networkSettings.Data);
                 instance.OnInitialiseComplete   += HandleOnInitialiseStateChange;
                 instance.Initialise(initProperties);

@@ -19,14 +19,20 @@ namespace VoxelBusters.AdsKit
         #region Fields
 
         [SerializeField]
+        [Tooltip("This enables or disables the whole plugin. Keep it enabled to use this plugin.")]
         private     bool                    m_isEnabled;
 
         [SerializeField]
-        private     bool                    m_isDebugBuild;
+        [Tooltip("When enabled, this setting will force the SDK to run in test mode. By default when in development build mode, the plugin will run in test mode.")]
+        private     bool                    m_forceTestMode;
 
         [SerializeField]
         [Tooltip("When auto load is enabled for an ad placement, this value (in seconds) determines the wait time before attempting another load request after a failure.")]
-        private     int                     m_autoLoadRetryDelay = 15;
+        private int                         m_autoLoadRetryDelay = 15;
+
+        [SerializeField]
+        [Tooltip("This will be used for setting permission usage descriptions on native platforms (for ex: NSUserTrackingUsageDescription on iOS).")]
+        private string                      m_userTrackingUsageDescription = "This identifier will be used by advertising networks to deliver personalized ads based on your interests.";
 
         [SerializeField]
         private     bool                    m_autoInitOnStart;
@@ -65,7 +71,7 @@ namespace VoxelBusters.AdsKit
                     s_package   = new UnityPackageDefinition(
                         name: "com.voxelbusters.adskit",
                         displayName: "Ads Kit",
-                        version: "2.1.2",
+                        version: "2.2.0",
                         defaultInstallPath: $"Assets/Plugins/VoxelBusters/AdsKit");
                 }
                 return s_package;
@@ -106,16 +112,27 @@ namespace VoxelBusters.AdsKit
             private set => m_autoInitOnStart    = value;
         }
 
-        public bool IsDebugBuild
+        public bool IsTestMode
         {
-            get => m_isDebugBuild;
-            internal set => m_isDebugBuild  = value;
+            get => m_forceTestMode || Debug.isDebugBuild;
+        }
+        
+        public bool ForceTestMode
+        {
+            get => m_forceTestMode;
+            internal set => m_forceTestMode = value;
         }
 
         public int AutoLoadRetryDelay
         {
             get => m_autoLoadRetryDelay;
             internal set => m_autoLoadRetryDelay = value;
+        }
+
+        public string UserTrackingUsageDescription
+        {
+            get => m_userTrackingUsageDescription;
+            internal set => m_userTrackingUsageDescription = value;
         }
 
         public LoadAdMode LoadAdMode
@@ -159,7 +176,7 @@ namespace VoxelBusters.AdsKit
         #region Static methods
 
         public static AdsKitSettings Create(bool isEnabled = true,
-                                            bool isDebugBuild = false,
+                                            bool forceTestMode = false,
                                             bool autoInitOnStart = false,
                                             LoadAdMode loadAdMode = LoadAdMode.Sequential,
                                             AdPlacementMeta[] placementMetaArray = null,
@@ -170,7 +187,7 @@ namespace VoxelBusters.AdsKit
         {
             var     newInstance                 = CreateInstance<AdsKitSettings>();
             newInstance.IsEnabled               = isEnabled;
-            newInstance.IsDebugBuild            = isDebugBuild;
+            newInstance.ForceTestMode           = forceTestMode;
             newInstance.AutoInitOnStart         = autoInitOnStart;
             newInstance.LoadAdMode              = loadAdMode;
             newInstance.NetworkPreferenceMeta   = networkPreferenceMeta ?? new AdNetworkPreferenceMeta();
@@ -235,6 +252,22 @@ namespace VoxelBusters.AdsKit
             return false;
         }
 
+        public bool HasAnyAdNetworksEnabled()
+        {
+            bool anyEnabled = false;
+
+            foreach (var each in m_networkSettingsArray)
+            {
+                if (each.IsEnabled)
+                {
+                    anyEnabled = true;
+                    break;
+                }
+            }
+
+            return anyEnabled;
+        }
+
         #endregion
 
 #region Overriden methods
@@ -286,22 +319,6 @@ namespace VoxelBusters.AdsKit
             }
 
             return anyInvalidPlacements;
-        }
-
-        private bool HasAnyAdNetworksEnabled()
-        {
-            bool anyEnabled = false;
-
-            foreach (var each in m_networkSettingsArray)
-            {
-                if (each.IsEnabled)
-                {
-                    anyEnabled = true;
-                    break;
-                }
-            }
-
-            return anyEnabled;
         }
 
 #endif
