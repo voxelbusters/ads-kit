@@ -133,7 +133,7 @@ namespace VoxelBusters.AdsKit.Demo
             }
             else
             {
-                Log("IConsentFormProvider implementation exists. You can initilise AdsKit with this consent form provider.");
+                Log("IConsentFormProvider implementation exists. You can initilise AdsKit with this consent form provider." + consentFormProvider);
             }
         }
 

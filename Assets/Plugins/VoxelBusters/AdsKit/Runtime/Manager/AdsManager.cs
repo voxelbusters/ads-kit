@@ -112,12 +112,28 @@ namespace VoxelBusters.AdsKit
         /// <param name="listener">A listener for Ads lifecycle callbacks.</param>
         public static void UnregisterListener(IAdLifecycleEventListener listener)
         {
-            var     manager = SharedInstance;
+            var manager = SharedInstance;
             if (manager == null) return;
 
             manager.UnregisterListener(listener as IInitialiseEventListener);
             manager.UnregisterListener(listener as ILoadAdEventListener);
             manager.UnregisterListener(listener as IShowAdEventListener);
+        }
+
+        public static void Enable()
+        {
+            var manager = SharedInstance;
+            if (manager == null) return;
+
+            manager.Enable();
+        }
+        
+        public static void Disable()
+        {
+            var manager = SharedInstance;
+            if (manager == null) return;
+
+            manager.Disable();
         }
 
         #endregion
@@ -131,7 +147,7 @@ namespace VoxelBusters.AdsKit
         /// <returns>Placement state.</returns>
         public static AdPlacementState GetAdPlacementState(string placement)
         {
-            if (!IsAvailable()) return AdPlacementState.Unknown;
+            if (!IsAvailable()) return AdPlacementState.Disabled;
 
             return SharedInstance.GetAdPlacementState(placement);
         }

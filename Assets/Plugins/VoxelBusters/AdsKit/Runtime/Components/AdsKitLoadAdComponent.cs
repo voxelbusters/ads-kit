@@ -66,13 +66,18 @@ namespace VoxelBusters.AdsKit
             IsDone = true;
             var state = AdsManager.GetAdPlacementState(placement: m_placement);
 
-            if(state == AdPlacementState.Ready)
+            if (state == AdPlacementState.ReadyToShow)
             {
                 m_onLoad?.Invoke(m_placement);
             }
             else
             {
                 var operation = AdsManager.LoadAd(m_placement, m_adContentOptionsAsset?.GetRawData());
+                if (operation == null)
+                {
+                    SendErrorEvent(new Error($"Failed to load ad. Current placement state: {state}."));
+                    return;
+                }
                 operation.OnComplete += (op) =>
                 {
                     if(op.Error == null)

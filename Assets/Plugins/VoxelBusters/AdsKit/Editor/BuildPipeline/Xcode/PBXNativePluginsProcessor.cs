@@ -51,7 +51,7 @@ namespace VoxelBusters.AdsKit.Editor.Build.Xcode
 
             if (Settings.HasAnyAdNetworksEnabled())
             {
-                requiredPermissionsDict["NSUserTrackingUsageDescription"] = trackingUsageDesription; //Replace with InfoPlistKey.kNSUserTrackingUsage
+                requiredPermissionsDict[InfoPlistKey.kNSUserTrackingUsage] = trackingUsageDesription;
             }
 
             return requiredPermissionsDict;

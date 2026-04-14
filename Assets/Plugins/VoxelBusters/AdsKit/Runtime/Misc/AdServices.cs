@@ -54,7 +54,7 @@ namespace VoxelBusters.AdsKit
             }
 
             // Select provider with highest priority value
-            Array.Sort(allAvailableProviders, (a, b) => a.Priority.CompareTo(b.Priority));
+            Array.Sort(allAvailableProviders, (a, b) => b.Priority.CompareTo(a.Priority));
 
             return allAvailableProviders[0];
         }

@@ -40,6 +40,8 @@ namespace VoxelBusters.AdsKit
 
         private     List<AdContent>                                     m_activeAdContents;
 
+        private     HashSet<string>                                     m_failedLoadPlacements;
+
         private     bool                                                m_isTestMode;
 
         private     ApplicationPrivacyConfiguration                      m_privacyConfig;
@@ -55,6 +57,8 @@ namespace VoxelBusters.AdsKit
         private     EventHandlerCollection<ILoadAdEventListener>        m_loadAdListeners;
 
         private     EventHandlerCollection<IShowAdEventListener>        m_showAdListeners;
+
+        private     bool                                                m_isDisabled;
 
         [ClearOnReload(ClearOnReloadOption.Default)]
         private static readonly object s_objectLock = new object();
@@ -122,6 +126,7 @@ namespace VoxelBusters.AdsKit
             m_inprogressLoadOperations  = new List<LoadAdOperation>();
             m_completedLoadOperations   = new List<LoadAdOperation>();
             m_activeAdContents          = new List<AdContent>();
+            m_failedLoadPlacements      = new HashSet<string>();
             m_initListeners             = new EventHandlerCollection<IInitialiseEventListener>();
             m_loadAdListeners           = new EventHandlerCollection<ILoadAdEventListener>();
             m_showAdListeners           = new EventHandlerCollection<IShowAdEventListener>();
@@ -202,7 +207,7 @@ namespace VoxelBusters.AdsKit
             // Guard case
             Assert.IsNotNullOrEmpty(networkSettingsArray, nameof(networkSettingsArray));
 
-            if (IsInitialisedOrWillChange) return null;
+            if (IsInitialisedOrWillChange || m_isDisabled) return null;
 
             // Cache information
             m_networkSettingsArray      = Array.FindAll(networkSettingsArray, (item) => item.IsEnabled);
@@ -303,6 +308,11 @@ namespace VoxelBusters.AdsKit
                                                      manager: this,
                                                      provider: provider);
 
+                case AdType.RewardedInterstitial:
+                    return new RewardedInterstitialAdContent(placement: placement,
+                                                     manager: this,
+                                                     provider: provider);
+
                 case AdType.Video:
                     return new VideoAdContent(placement: placement,
                                               manager: this,
@@ -343,27 +353,35 @@ namespace VoxelBusters.AdsKit
         public AdPlacementState GetAdPlacementState(string placement)
         {
             // Guard case
+            if (m_isDisabled) return AdPlacementState.Disabled;
+
             if (!PreprocessAdRequest(out Error error)) return AdPlacementState.Unknown;
 
             // Find meta infomation
             var     loadOp  = GetLoadAdOperation(placement);
             if (loadOp == null)
             {
-                return AdPlacementState.NotAvailable;
+                var adContent = GetActiveAdContent(placement);
+                if (adContent != null)
+                {
+                    return adContent.IsShowing ? AdPlacementState.Showing : AdPlacementState.ReadyToShow;
+                }
+                return m_failedLoadPlacements.Contains(placement) ? AdPlacementState.LoadFailed : AdPlacementState.NoAdLoaded;
             }
             else if (loadOp.IsDone)
             {
-                return AdPlacementState.Ready;
+                return loadOp.Error == null ? AdPlacementState.ReadyToShow : AdPlacementState.LoadFailed;
             }
             else
             {
-                return AdPlacementState.Waiting;
+                return AdPlacementState.Loading;
             }
         }
 
         public LoadAdRequest LoadAd(string placement,
                                     AdContentOptions options = null)
         {
+            if (m_isDisabled) return null;
 
             // Clean up if any existing loaded ad
             CleanupUsedAds(placement);
@@ -380,7 +398,7 @@ namespace VoxelBusters.AdsKit
         }
 
         public AdContent ShowAd(string placement)
-        {
+        {            
             // Find meta infomation
             var     placementMeta   = GetAdPlacementMetaWithPlacement(placement);
             if (placementMeta == null)
@@ -397,6 +415,8 @@ namespace VoxelBusters.AdsKit
 
         public AdContent ShowAd(AdType adType, string placement)
         {
+            if (m_isDisabled) return null;
+
             var     adContent   = GetActiveAdContent(placement);
             if (adContent == null)
             {
@@ -435,7 +455,7 @@ namespace VoxelBusters.AdsKit
 
         public void HideAd(string placement, bool destroy = false)
         {
-            var     adContent   = GetActiveAdContent(placement);
+            var adContent = GetActiveAdContent(placement);
             if (adContent == null)
             {
                 DebugLogger.LogWarning(AdsKitSettings.Domain, $"The operation could not be completed because there is no ad content currently displayed at placement {placement}.");
@@ -447,6 +467,17 @@ namespace VoxelBusters.AdsKit
                 return;
             }
             (adContent as BannerAdContent).HideAd(destroy);
+        }
+        
+        private void HideAllAds(bool destroy = false)
+        {
+            foreach (var adContent in m_activeAdContents)
+            {
+                if (adContent is BannerAdContent bannerAdContent)
+                {
+                    bannerAdContent.HideAd(destroy);    
+                }
+            } 
         }
 
         #endregion
@@ -604,7 +635,7 @@ namespace VoxelBusters.AdsKit
 
         private bool IsActiveAndInitialised()
         {
-            return IsInitialised && gameObject.activeSelf;
+            return IsInitialised && gameObject.activeSelf && !m_isDisabled;
         }
 
         private bool IsConsentGranted()
@@ -809,6 +840,7 @@ namespace VoxelBusters.AdsKit
                     break;
             }
             newOp.ContentOptions    = options;
+            m_failedLoadPlacements.Remove(placement);
             m_inprogressLoadOperations.Add(newOp);
             newOp.OnComplete += (op) => OnLoadAdComplete(op);
             newOp.Start();
@@ -902,16 +934,18 @@ namespace VoxelBusters.AdsKit
 
         private void OnLoadAdComplete(IAsyncOperation<LoadAdResult> sender)
         {
+            var placement = ((LoadAdOperation)sender).Placement;
             UpdateActiveLoadOperations();
 
-            var placement = ((LoadAdOperation)sender).Placement;
             if (sender.Error == null)
             {
+                m_failedLoadPlacements.Remove(placement);
                 SendLoadAdCompleteEvent(placement: placement,
                                     result: sender.Result);
             }
             else
             {
+                m_failedLoadPlacements.Add(placement);
                 SendLoadAdFailEvent(placement: placement,
                                 error: sender.Error);
 
@@ -1071,13 +1105,24 @@ namespace VoxelBusters.AdsKit
         {
             var adContent = GetActiveAdContent(placement);
 
-            if(adContent != null)
+            if (adContent != null)
             {
                 if ((adContent is BannerAdContent))
                 {
                     (adContent as BannerAdContent).HideAd(destroy: true);
                 }
             }
+        }
+        
+        internal void Enable()
+        {
+            m_isDisabled = false;
+        }
+
+        internal void Disable()
+        {
+            m_isDisabled = true;
+            HideAllAds(destroy: false);
         }
 
         #endregion

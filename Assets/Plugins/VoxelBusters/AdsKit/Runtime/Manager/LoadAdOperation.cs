@@ -163,7 +163,7 @@ namespace VoxelBusters.AdsKit
                                                                    adType: 0,
                                                                    networkId: adNetwork.NetworkId,
                                                                    placement: Placement,
-                                                                   placementState: AdPlacementState.NotAvailable,
+                                                                   placementState: AdPlacementState.LoadFailed,
                                                                    error: AdError.ConfigurationNotFound("No details found for the given placement."));
 
                 DebugLogger.LogError(AdsKitSettings.Domain, $"{Placement} (placement id) and Ad Unit id mapping not found in {adNetwork.Name} settings. Open AdKitSettings to Configure in services section of {adNetwork.Name}");
@@ -202,13 +202,13 @@ namespace VoxelBusters.AdsKit
 
         protected void ProcessLoadAdData()
         {
-            var     preferredProvider   = m_cachedStates.Find((item) => item.PlacementState == AdPlacementState.Ready);
+            var     preferredProvider   = m_cachedStates.Find((item) => item.PlacementState == AdPlacementState.ReadyToShow);
             if (preferredProvider != null)
             {
                 var     result          = new LoadAdResult(adUnitId: preferredProvider.AdUnitId,
                                                            adType: preferredProvider.AdType,
                                                            placement: Placement,
-                                                           placementState: AdPlacementState.Ready,
+                                                           placementState: AdPlacementState.ReadyToShow,
                                                            loadStateArray: m_cachedStates.ToArray(),
                                                            preferredAdProvider: preferredProvider.NetworkId);
                 SetIsCompleted(result);
@@ -281,7 +281,7 @@ namespace VoxelBusters.AdsKit
             UpdateCachedStateInfo(adNetwork, stateInfo);
 
             // Check whether any operation is completed
-            if ((stateInfo.PlacementState == AdPlacementState.Ready) || !NextAdNetwork(out AdNetworkAdapter nextNetwork))
+            if ((stateInfo.PlacementState == AdPlacementState.ReadyToShow) || !NextAdNetwork(out AdNetworkAdapter nextNetwork))
             {
                 ProcessLoadAdData();
             }

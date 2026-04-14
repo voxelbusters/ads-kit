@@ -36,6 +36,8 @@ namespace VoxelBusters.AdsKit
 
         public bool IsShowing => m_status == ContentStatus.Showing;
 
+        public bool IsHidden => m_status == ContentStatus.Hidden;
+
         public bool IsShowingOrWillShow => IsShowing || (m_status == ContentStatus.WillShow);
 
         public ShowAdStateInfo CurrentState { get; protected set; }

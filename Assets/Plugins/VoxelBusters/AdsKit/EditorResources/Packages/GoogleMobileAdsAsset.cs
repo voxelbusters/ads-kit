@@ -14,12 +14,13 @@ namespace VoxelBusters.AdsKit.Editor.Clients
                    description: "AdMob is a mobile advertising subsidiary of Google.",
                    importPaths: new string[]
                    {
-                       $"https://github.com/googleads/googleads-mobile-unity/releases",//10.6.0 from 9.1.0
+                       $"https://github.com/googleads/googleads-mobile-unity/releases",//11.0.0 <- 10.6.0 <- 9.1.0
                        $"{AdsKitSettings.Package.GetEditorResourcesPath()}/Packages/GoogleMobileAdsAdapter.unitypackage",
                    },
                    installPaths: new string[]
                    {
                        "Assets/GoogleMobileAds",
+                       //"Packages/com.google.ads.mobile",
                        $"{AdsKitSettings.Package.GetGeneratedPath()}/AdMob",
                    })
         {}
